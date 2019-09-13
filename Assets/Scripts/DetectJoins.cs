@@ -16,9 +16,9 @@ public class DetectJoins : MonoBehaviour
     //private string dataBasePath;
 
     public Gesture gesture;
-    private readonly string leanDB = "kinectHandSignland.gbd";
-    private string landingLeftGesture = "Landing_Left";
-    private string landingRightGesture = "Landing_Right";
+    private readonly string leanDB = "salute.gbd";
+    private string landingLeftGesture = "salute";
+    private string landingRightGesture = "saluteProgress";
 
     private VisualGestureBuilderFrameSource vgbFrameSource = null;
     private VisualGestureBuilderFrameReader _Reader;
@@ -38,6 +38,7 @@ public class DetectJoins : MonoBehaviour
     {
         _gestureFrameReader.IsPaused = false;
         _gestureFrameSource.TrackingId = id;
+
         _gestureFrameReader.FrameArrived += _gestureFrameReader_FrameArrived;
     }
 
@@ -54,7 +55,7 @@ public class DetectJoins : MonoBehaviour
 
         _gestureDatabase = VisualGestureBuilderDatabase.Create(Path.Combine(Application.streamingAssetsPath, leanDB));
         _gestureFrameSource = VisualGestureBuilderFrameSource.Create(_kinect, 0);
-
+        
         foreach (var gesture in _gestureDatabase.AvailableGestures)
         {
             _gestureFrameSource.AddGesture(gesture);
@@ -71,6 +72,8 @@ public class DetectJoins : MonoBehaviour
 
         _gestureFrameReader = _gestureFrameSource.OpenReader();
         _gestureFrameReader.IsPaused = true;
+
+
     }
 
     void _gestureFrameReader_FrameArrived(object sender, VisualGestureBuilderFrameArrivedEventArgs e)
@@ -78,8 +81,14 @@ public class DetectJoins : MonoBehaviour
         VisualGestureBuilderFrameReference frameReference = e.FrameReference;
         using (VisualGestureBuilderFrame frame = frameReference.AcquireFrame())
         {
+            
             if (frame != null && frame.DiscreteGestureResults != null)
             {
+                Debug.Log(frame.DiscreteGestureResults.Count);
+                foreach (var item in frame.DiscreteGestureResults)
+                {
+                    Debug.Log("test" + item.Key);
+                }
                 if (AttachedObject == null)
                     return;
 
@@ -101,7 +110,7 @@ public class DetectJoins : MonoBehaviour
                         if (_ps != null)
                         {
                             _ps.emissionRate = 100 * prog;
-                            _ps.startColor = Color.red;
+                            _ps.startColor = Color.green;
                         }
                     }
                 }
@@ -110,7 +119,7 @@ public class DetectJoins : MonoBehaviour
                     if (_ps != null)
                     {
                         _ps.emissionRate = 4;
-                        _ps.startColor = Color.blue;
+                        _ps.startColor = Color.red;
                     }
                 }
             }
