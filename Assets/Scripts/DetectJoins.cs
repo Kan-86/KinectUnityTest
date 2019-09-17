@@ -8,23 +8,6 @@ using Windows.Kinect;
 
 public class DetectJoins : MonoBehaviour
 {
-    //public GameObject BodySrcManager;
-    //public JointType TrackedJoint;
-    //private BodySourceManager bodyManager;
-    //private Body[] bodies;
-    //public float multiplier = 6f;
-    //private string dataBasePath;
-
-    public Gesture gesture;
-    private readonly string leanDB = "salute.gbd";
-    private string landingLeftGesture = "salute";
-    private string landingRightGesture = "saluteProgress";
-
-    private VisualGestureBuilderFrameSource vgbFrameSource = null;
-    private VisualGestureBuilderFrameReader _Reader;
-    KinectSensor sensor = null;
-
-
     VisualGestureBuilderDatabase _gestureDatabase;
     VisualGestureBuilderFrameSource _gestureFrameSource;
     VisualGestureBuilderFrameReader _gestureFrameReader;
@@ -32,13 +15,13 @@ public class DetectJoins : MonoBehaviour
     Gesture _salute;
     Gesture _saluteProgress;
     ParticleSystem _ps;
+
     public GameObject AttachedObject;
 
     public void SetTrackingId(ulong id)
     {
         _gestureFrameReader.IsPaused = false;
         _gestureFrameSource.TrackingId = id;
-
         _gestureFrameReader.FrameArrived += _gestureFrameReader_FrameArrived;
     }
 
@@ -53,18 +36,18 @@ public class DetectJoins : MonoBehaviour
         }
         _kinect = KinectSensor.GetDefault();
 
-        _gestureDatabase = VisualGestureBuilderDatabase.Create(Path.Combine(Application.streamingAssetsPath, leanDB));
+        _gestureDatabase = VisualGestureBuilderDatabase.Create(Application.streamingAssetsPath + "/salute.gbd");
         _gestureFrameSource = VisualGestureBuilderFrameSource.Create(_kinect, 0);
-        
+
         foreach (var gesture in _gestureDatabase.AvailableGestures)
         {
             _gestureFrameSource.AddGesture(gesture);
 
-            if (gesture.Name == landingLeftGesture)
+            if (gesture.Name == "salute")
             {
                 _salute = gesture;
             }
-            if (gesture.Name == landingRightGesture)
+            if (gesture.Name == "saluteProgress")
             {
                 _saluteProgress = gesture;
             }
@@ -72,8 +55,6 @@ public class DetectJoins : MonoBehaviour
 
         _gestureFrameReader = _gestureFrameSource.OpenReader();
         _gestureFrameReader.IsPaused = true;
-
-
     }
 
     void _gestureFrameReader_FrameArrived(object sender, VisualGestureBuilderFrameArrivedEventArgs e)
@@ -81,14 +62,8 @@ public class DetectJoins : MonoBehaviour
         VisualGestureBuilderFrameReference frameReference = e.FrameReference;
         using (VisualGestureBuilderFrame frame = frameReference.AcquireFrame())
         {
-            
             if (frame != null && frame.DiscreteGestureResults != null)
             {
-                Debug.Log(frame.DiscreteGestureResults.Count);
-                foreach (var item in frame.DiscreteGestureResults)
-                {
-                    Debug.Log("test" + item.Key);
-                }
                 if (AttachedObject == null)
                     return;
 
@@ -110,7 +85,7 @@ public class DetectJoins : MonoBehaviour
                         if (_ps != null)
                         {
                             _ps.emissionRate = 100 * prog;
-                            _ps.startColor = Color.green;
+                            _ps.startColor = Color.red;
                         }
                     }
                 }
@@ -119,12 +94,14 @@ public class DetectJoins : MonoBehaviour
                     if (_ps != null)
                     {
                         _ps.emissionRate = 4;
-                        _ps.startColor = Color.red;
+                        _ps.startColor = Color.blue;
                     }
                 }
             }
         }
     }
+}
+
 
 
 
@@ -224,4 +201,4 @@ public class DetectJoins : MonoBehaviour
     //    //    }
     //    //}
     //}
-}
+

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GestureBuilderFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<SolutionFile>
+		<Header>
+			<Date>2019-09-17</Date>
+			<Time>14:34:55.4354753+02:00</Time>
+			<Version>1</Version>
+			<Type>Solution</Type>
+			<ID>ede4ea84-7718-4a44-9ad0-1d77699629c1</ID>
+		</Header>
+		<Solution_Data>
+			<Files>
+				<Name />
+				<Content>
+					<Items>
+						<File>Hover.vgbproj</File>
+					</Items>
+					<Items>
+						<File>Hover.a.vgbproj</File>
+					</Items>
+					<Items>
+						<File>Move_Upwards.vgbproj</File>
+					</Items>
+					<Items>
+						<File>Move_Upwards.a.vgbproj</File>
+					</Items>
+				</Content>
+			</Files>
+		</Solution_Data>
+		<UI_State />
+		<Attributes />
+	</SolutionFile>
+</GestureBuilderFile>
